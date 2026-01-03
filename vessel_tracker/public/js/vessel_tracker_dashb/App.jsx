@@ -119,13 +119,37 @@ const VesselMap = () => {
 
   const addOrUpdateVessel = (data, type) => {
     const mmsi = data.UserID?.toString();
-    if (!mmsi) return;
+    
+    // Debug logging
+    console.log(`Processing vessel data:`, {
+      type, 
+      mmsi, 
+      latitude: data.Latitude, 
+      longitude: data.Longitude,
+      hasPosition: !!(data.Latitude && data.Longitude)
+    });
+    
+    if (!mmsi) {
+      console.log("⚠️ No MMSI found in vessel data");
+      return;
+    }
 
     setVessels(prev => {
       const existingIndex = prev.findIndex(v => v.mmsi === mmsi);
       
       let vesselData = {};
       if (type === "position") {
+        // Validate coordinates are within reasonable bounds for Saudi Arabia area
+        if (!data.Latitude || !data.Longitude) {
+          console.log(`⚠️ Vessel ${mmsi} missing coordinates:`, {lat: data.Latitude, lon: data.Longitude});
+          return prev;
+        }
+        
+        if (data.Latitude < 12 || data.Latitude > 35 || data.Longitude < 32 || data.Longitude > 55) {
+          console.log(`⚠️ Vessel ${mmsi} coordinates outside expected area:`, {lat: data.Latitude, lon: data.Longitude});
+          // Still process it but log the warning
+        }
+        
         vesselData = {
           mmsi: mmsi,
           latitude: data.Latitude,
@@ -152,9 +176,12 @@ const VesselMap = () => {
       if (existingIndex >= 0) {
         const updated = [...prev];
         updated[existingIndex] = { ...updated[existingIndex], ...vesselData };
+        console.log(`🔄 Updated existing vessel ${mmsi}:`, updated[existingIndex]);
         return updated;
       } else {
-        return [...prev, vesselData];
+        const newVessel = { ...vesselData };
+        console.log(`🆕 Added new vessel ${mmsi}:`, newVessel);
+        return [...prev, newVessel];
       }
     });
     

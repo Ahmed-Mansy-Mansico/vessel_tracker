@@ -6,37 +6,36 @@ import time
 import frappe
 
 async def connect_ais_stream():
-    while True:
-        try:
-            async with websockets.connect("wss://stream.aisstream.io/v0/stream") as websocket:
-                subscribe_message = {
-                    "APIKey": frappe.conf.get("AIS_API_KEY"),
-                    "BoundingBoxes": [[[34.0, 16.0], [50.0, 32.0]]],
-                    "FilterMessageTypes": ["PositionReport", "ShipStaticData"]
-                }
+    try:
+        async with websockets.connect("wss://stream.aisstream.io/v0/stream") as websocket:
+            subscribe_message = {
+                "APIKey": frappe.conf.get("AIS_API_KEY"),
+                "BoundingBoxes": [[[36.0, 15.0], [52.0, 33.0]]],  # [SW_lon, SW_lat], [NE_lon, NE_lat] - covers Red Sea to Persian Gulf
+                "FilterMessageTypes": ["PositionReport", "ShipStaticData"]
+            }
 
-                subscribe_message_json = json.dumps(subscribe_message)
-                await websocket.send(subscribe_message_json)
+            subscribe_message_json = json.dumps(subscribe_message)
+            await websocket.send(subscribe_message_json)
 
-                async for message_json in websocket:
-                    try:
-                        data = json.loads(message_json)
-                        
-                        # Process AIS message for database storage
-                        frappe.call('vessel_tracker.vessel_tracker.api.live_vessels.process_ais_message', 
-                                   message_data=data)
-                        
-                        # Also publish to realtime for frontend
-                        frappe.publish_realtime(
-                            event="ais_stream",
-                            message=data,
-                        )
-                    except Exception as e:
-                        print(f"AIS Stream Message Error: {e}")
-                        
-        except Exception as e:
-            print(f"AIS Stream Reconnect: {e}")
-            await asyncio.sleep(5)
+            async for message_json in websocket:
+                try:
+                    data = json.loads(message_json)
+                    
+                    # Process AIS message for database storage
+                    frappe.call('vessel_tracker.vessel_tracker.api.live_vessels.process_ais_message', 
+                                message_data=data)
+                    
+                    # Also publish to realtime for frontend
+                    frappe.publish_realtime(
+                        event="ais_stream",
+                        message=data,
+                    )
+                except Exception as e:
+                    print(f"AIS Stream Message Error: {e}")
+                    
+    except Exception as e:
+        print(f"AIS Stream Reconnect: {e}")
+        await asyncio.sleep(5)
 
 def run():
     import frappe

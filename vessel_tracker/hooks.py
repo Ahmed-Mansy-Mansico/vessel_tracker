@@ -150,7 +150,7 @@ after_install = "vessel_tracker.vessel_tracker.install.after_install"
 
 scheduler_events = {
 	"all": [
-		"vessel_tracker.vessel_tracker.tasks.start_ais_stream_if_needed"
+		"vessel_tracker.vessel_tracker.workers.ais_stream.run"
 	],
 }
 

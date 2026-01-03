@@ -44,7 +44,7 @@ def run():
     # Get the site name from current working directory or default to first site
     try:
         # Try to get site from sites directory
-        sites_path = "/home/frappe/fmh-bench/sites"
+        sites_path = "/home/frappe/frappe-bench/sites"
         sites = [d for d in os.listdir(sites_path) 
                 if os.path.isdir(os.path.join(sites_path, d)) and d not in ['assets', '__pycache__']]
         site_name = sites[0] if sites else "fmh.psc-s.com"

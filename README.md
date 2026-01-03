@@ -35,6 +35,9 @@ mit
 
 ## Need to run 
 sudo nano /etc/systemd/system/ais-worker.service
+mkdir -p ~/.config/systemd/user
+nano ~/.config/systemd/user/ais-worker.service
+
 
 Update Site config with the api key
 
@@ -45,7 +48,7 @@ After=network.target redis-server.service
 [Service]
 Type=simple
 User=frappe
-WorkingDirectory=/home/frappe/fmh-bench
+WorkingDirectory=/home/frappe/frappe-bench
 ExecStart=/home/frappe/.local/bin/bench ais-worker
 Restart=always
 RestartSec=5

@@ -1,0 +1,63 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-01-03 04:58:52.965810",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "ais_api_key",
+  "auto_update_vessels",
+  "update_interval_seconds",
+  "saudi_bounds_enabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "ais_api_key",
+   "fieldtype": "Password",
+   "label": "AIS API Key"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_update_vessels",
+   "fieldtype": "Check",
+   "label": "auto_update_vessels"
+  },
+  {
+   "fieldname": "update_interval_seconds",
+   "fieldtype": "Float",
+   "label": "update_interval_seconds"
+  },
+  {
+   "default": "0",
+   "fieldname": "saudi_bounds_enabled",
+   "fieldtype": "Check",
+   "label": "saudi_bounds_enabled"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-01-03 04:59:40.956132",
+ "modified_by": "Administrator",
+ "module": "Vessel Tracker",
+ "name": "Vessel Tracker Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

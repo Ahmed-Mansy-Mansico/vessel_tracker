@@ -31,3 +31,41 @@ Pre-commit is configured to use the following tools for checking and formatting 
 ### License
 
 mit
+
+
+## Need to run 
+sudo nano /etc/systemd/system/ais-worker.service
+
+Update Site config with the api key
+
+[Unit]
+Description=Frappe AIS Streaming Worker
+After=network.target redis-server.service
+
+[Service]
+Type=simple
+User=frappe
+WorkingDirectory=/home/frappe/fmh-bench
+ExecStart=/home/frappe/.local/bin/bench ais-worker
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+
+
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable ais-worker
+sudo systemctl start ais-worker
+
+
+sudo systemctl status ais-worker
+
+
+<!-- for logging -->
+sudo systemctl restart ais-worker
+sudo journalctl -u ais-worker -f
+
+journalctl -u ais-worker -f

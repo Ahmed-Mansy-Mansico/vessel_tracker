@@ -149,7 +149,7 @@ after_install = "vessel_tracker.vessel_tracker.install.after_install"
 # ---------------
 
 scheduler_events = {
-	"all": [
+	"daily_long": [
 		"vessel_tracker.vessel_tracker.workers.ais_stream.run"
 	],
 }
@@ -229,4 +229,3 @@ scheduler_events = {
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-

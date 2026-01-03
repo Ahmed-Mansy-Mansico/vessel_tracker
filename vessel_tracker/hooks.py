@@ -83,7 +83,7 @@ app_license = "mit"
 # ------------
 
 # before_install = "vessel_tracker.install.before_install"
-# after_install = "vessel_tracker.install.after_install"
+after_install = "vessel_tracker.vessel_tracker.install.after_install"
 
 # Uninstallation
 # ------------
@@ -148,23 +148,11 @@ app_license = "mit"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"vessel_tracker.tasks.all"
-# 	],
-# 	"daily": [
-# 		"vessel_tracker.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"vessel_tracker.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"vessel_tracker.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"vessel_tracker.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"all": [
+		"vessel_tracker.vessel_tracker.tasks.start_ais_stream_if_needed"
+	],
+}
 
 # Testing
 # -------
